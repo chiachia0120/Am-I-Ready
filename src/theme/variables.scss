@@ -1,2 +1,27 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+:root {
+  /* Ionic 主題色 */
+  --ion-color-primary: #f0d387
+    /* 你的金色 */
+    --ion-color-primary-contrast: #1a1a1a;
+  --ion-background-color: #efe3c7;
+  /* 米色底 */
+  --ion-text-color: #302B2D;
+
+  /* 你的自定義 token */
+  --app-card-bg: #f6edd6;
+  --app-accent: #A2bde0;
+  /* 分析/進度的小藍色 */
+  --app-radius: 18px;
+}
+
+ion-content {
+  --background: var(--ion-background-color);
+}
+
+.app-card {
+  background: var(--app-card-bg);
+  border-radius: var(--app-radius);
+  padding: 12px;
+}

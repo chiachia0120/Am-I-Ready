@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Checklist</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Weather Card -->
+  <ion-card *ngIf="weather$ | async as weather">
+    <ion-card-content>
+      <div class="weather-card">
+        <!-- 左邊：地點 + 溫度 -->
+        <div class="weather-left">
+          <div class="city">{{ cityName }}</div>
+          <div class="description">{{ weather.description }}</div>
+          <div class="temp">{{ weather.temperature_now }}°</div>
+        </div>
+
+        <!-- 右邊：icon -->
+        <img
+          class="weather-icon"
+          [src]="mapWeatherIcon(weather.weatherCode)"
+          alt="weather icon"
+        />
+      </div>
+
+      <!-- 下方區塊 -->
+      <div class="weather-footer">
+        <div>
+          <div class="label">Highest</div>
+          <div class="value">{{ weather.temperature_max }}°</div>
+        </div>
+        <div>
+          <div class="label">Lowest</div>
+          <div class="value">{{ weather.temperature_min }}°</div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Checklist Title -->
+  <ion-text class="checklist-title">
+    <div>Checklist</div>
+  </ion-text>
+
+  <!-- Progress bar -->
+  <div class="progress-container">
+    <ion-progress-bar [value]="progress$ | async"></ion-progress-bar>
+    <p class="progress-label">
+      {{ (((progress$ | async) ?? 0) * 100) | number:'1.0-0' }}%
+    </p>
+  </div>
+
+  <!-- Checklist Items -->
+  <ion-list>
+    <ion-item *ngFor="let item of (checklist$ | async)">
+      <ion-icon
+        [name]="item.icon || 'briefcase-outline'"
+        slot="start"
+      ></ion-icon>
+      <ion-label>{{ item.label }}</ion-label>
+      <ion-checkbox
+        slot="end"
+        [checked]="item.selected"
+        (ionChange)="toggleChecklistItem(item)"
+      ></ion-checkbox>
+    </ion-item>
+  </ion-list>
+
+  <!-- Sorted Popup -->
+  <!-- <ion-modal [isOpen]="showSorted" cssClass="sorted-modal">
+    <ng-template>
+      <div class="sorted-popup">
+        <img src="assets/sorted.svg" alt="sorted" class="sorted-svg" />
+      </div>
+    </ng-template>
+  </ion-modal>
+</ion-content> -->
+  <div class="sorted-popup" *ngIf="allDone$ | async">
+    <div class="sorted-circle">
+      <h2>You’re sorted!</h2>
+      <p>Let’s go 🎉</p>
+    </div>
+  </div></ion-content
+>

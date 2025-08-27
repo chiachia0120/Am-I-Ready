@@ -1,0 +1,201 @@
+ion-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 12px;
+  background: #fff;
+  overflow: hidden; // 讓圓角生效
+
+  &-content {
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.weather-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+
+  .weather-left {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+
+    .city {
+      font-size: 20px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .description {
+      font-size: 16px;
+    }
+
+    .temp {
+      font-size: 32px;
+      font-weight: 700;
+      margin-top: 4px;
+      color: #222;
+    }
+  }
+
+  .weather-icon {
+    height: 100px;
+  }
+}
+
+.weather-footer {
+  display: flex;
+  justify-content: space-around;
+  background: #f5f5f5;
+  padding: 12px 0;
+  text-align: center;
+
+  .label {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 4px;
+  }
+
+  .value {
+    font-size: 16px;
+    font-weight: 500;
+    color: #888;
+  }
+}
+
+.checklist-title {
+  text-align: center;
+  margin-top: 12px;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.progress-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+
+  .progress-label {
+    font-size: 14px;
+    color: var(--ion-color-medium);
+  }
+
+  ion-progress-bar {
+    --background: #ffff; // 進度顏色
+    --progress-background: #cccccc; // 進度顏色
+    height: 12px; // 自訂高度
+    border-radius: 10px;
+  }
+}
+
+
+ion-list {
+  margin: 12px;
+  border-radius: 10px;
+  background: transparent; // 不要整個白底
+}
+
+ion-item {
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --padding-start: 16px; // 左內距（icon 與邊緣距離）
+  --inner-padding-end: 12px; // 右內距（checkbox 與邊緣距離）
+  --min-height: 60px; // 高度一致
+  --border-style: none;
+}
+
+ion-item::part(native) {
+  background: #fff; // 白底
+  border-radius: 8px; // 圓角
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); // 陰影
+}
+
+
+ion-item ion-icon {
+  font-size: 20px;
+  color: #333;
+  margin-right: 12px;
+}
+
+ion-item ion-label {
+  font-weight: 500;
+  font-size: 16px;
+  color: #222;
+}
+
+ion-checkbox {
+  --size: 22px;
+  --checkbox-background-checked: #f9c74f; // 勾選顏色（黃）
+  --checkbox-background: #fff;
+  --border-color: #aaa;
+  --border-color-checked: #f9c74f;
+  --checkmark-color: #000; // ✔ 顏色
+  margin-left: auto;
+}
+
+.sorted-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; // 蓋在最上層
+  background: rgba(255, 255, 255, 0.4); // 半透明背景，像 SweetAlert
+  backdrop-filter: blur(2px); // 模糊背景
+}
+
+.sorted-circle {
+  width: 280px;
+  height: 280px;
+  background: #ffe599;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+
+  animation: popIn 0.5s ease-out forwards;
+}
+
+.sorted-circle h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.sorted-circle p {
+  margin: 0.5rem 0 0;
+  font-size: 18px;
+  color: #555;
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  70% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

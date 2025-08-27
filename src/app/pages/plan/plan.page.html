@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>What's your plan today?</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="calendar-outline"></ion-icon>
+        Plans for today
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-list>
+      <!-- 活動清單 -->
+      <ion-item *ngFor="let activity of (activities$ | async)">
+        <ion-icon name="briefcase-outline" slot="start"></ion-icon>
+        <ion-label>{{ activity.title }}</ion-label>
+
+        <ion-checkbox
+          slot="end"
+          [checked]="activity.selected"
+          (ionChange)="toggleActivity(activity)"
+        ></ion-checkbox>
+
+        <ion-button
+          fill="clear"
+          color="danger"
+          slot="end"
+          (click)="removeActivity(activity)"
+        >
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <!-- 新增活動 -->
+      <ion-item>
+        <ion-input
+          #newActivity
+          type="text"
+          fill="outline"
+          placeholder="Add a plan"
+        ></ion-input>
+        <ion-button
+          fill="clear"
+          slot="end"
+          (click)="addActivity(newActivity.value); newActivity.value=''"
+        >
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+  <!-- 產生 checklist -->
+  <ion-button expand="block" (click)="generateChecklist()">
+    Generate checklist
+  </ion-button>
+</ion-content>

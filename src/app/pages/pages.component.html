@@ -1,0 +1,30 @@
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button
+      tab="plan"
+      [routerLink]="['/pages/plan']"
+      routerDirection="root"
+    >
+      <ion-icon name="calendar-outline"></ion-icon>
+      <ion-label>Plan</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button
+      tab="checklist"
+      [routerLink]="['/pages/checklist']"
+      routerDirection="root"
+    >
+      <ion-icon name="checkbox-outline"></ion-icon>
+      <ion-label>Checklist</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button
+      tab="question"
+      [routerLink]="['/pages/question']"
+      routerDirection="root"
+    >
+      <ion-icon name="help-circle-outline"></ion-icon>
+      <ion-label>Preferences</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
