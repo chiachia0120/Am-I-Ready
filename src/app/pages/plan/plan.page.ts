@@ -10,7 +10,7 @@ import {
 } from '../../../shared/services';
 import { Observable } from 'rxjs';
 import { PlanState, PlanItem } from '../../../shared/models';
-import { take } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { mapWeatherCode } from '../../../shared/utils/weather-mapper';
 
 @Component({
@@ -23,6 +23,7 @@ import { mapWeatherCode } from '../../../shared/utils/weather-mapper';
 export class PlanPage implements OnInit {
   newTitle = '';
   state$: Observable<PlanState>;
+  selectedCount$!: Observable<number>;
   activities$!: Observable<PlanItem[]>;
   constructor(
     private planService: PlanService,
@@ -36,7 +37,9 @@ export class PlanPage implements OnInit {
 
   ngOnInit() {
     this.activities$ = this.planService.plans$;
-
+    this.selectedCount$ = this.activities$.pipe(
+      map((list) => (list ?? []).filter((a) => a.selected).length)
+    );
     this.weatherService.initLocation();
   }
 

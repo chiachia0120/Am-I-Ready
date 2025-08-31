@@ -7,9 +7,11 @@
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <ion-card-title>
+      <ion-card-title class="plan-title">
         <ion-icon name="calendar-outline"></ion-icon>
-        Plans for today
+        <div class="text"></div>
+        {{ selectedCount$ | async }} Plan{{ ((selectedCount$ | async) ?? 0) > 1
+        ? 's' : '' }} for today
       </ion-card-title>
     </ion-card-header>
 
@@ -55,7 +57,7 @@
   </ion-card>
 
   <!-- 產生 checklist -->
-  <ion-button expand="block" (click)="generateChecklist()">
+  <ion-button expand="block" (click)="generateChecklist()" class="generate-btn">
     Generate checklist
   </ion-button>
 </ion-content>

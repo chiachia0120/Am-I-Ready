@@ -1,3 +1,24 @@
+ion-title {
+  font-size: clamp(14px, 4vw, 20px);
+}
+
+.plan-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px; // icon 與文字距離
+  background: #a2bde0; // 你 Figma 上的藍色
+  color: #fff; // 讓文字變白，跟藍底對比
+  border-radius: 6px; // 依照設計稿圓角
+  padding: 8px 12px; // 內距讓區塊比較美觀
+  font-size: 20px;
+
+  .text {
+    font-weight: 600;
+  }
+}
+
+
 ion-list {
   padding: 0;
   margin: 0 12px;
@@ -39,4 +60,24 @@ ion-checkbox {
   --checkbox-background: #fff;
   --checkbox-background-checked: #f9c74f;
   margin-left: auto;
+}
+
+.generate-btn {
+  --background: #FFFFFF;
+  --color: #333333;
+  --border-radius: 8px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --border: 1px solid #333333;
+  --ripple-color: transparent;
+  --background-activated: transparent;
+  --background-focused: transparent;
+  font-weight: 600;
+  font-size: 18px;
+  margin: 0 12px;
+
+  // active
+  &:active {
+    --background: #d3d4d5;
+  }
 }
