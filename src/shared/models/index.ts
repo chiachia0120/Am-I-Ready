@@ -1,2 +1,2 @@
 export * from './plan.models';
-export * from './weather.models';
+export * from './preferences.models';

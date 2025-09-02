@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { map, Observable } from 'rxjs';
+import { pairwise, map, Observable, startWith, Subscription } from 'rxjs';
 import { PlanService, WeatherService } from '../../../shared/services';
 import { ChecklistItem } from '../../../shared/models/plan.models';
 
@@ -14,6 +14,8 @@ import { ChecklistItem } from '../../../shared/models/plan.models';
 })
 export class ChecklistPage implements OnInit {
   showSorted = false;
+  private allDoneSub?: Subscription;
+
   constructor(
     private planService: PlanService,
     private weatherService: WeatherService
@@ -35,7 +37,6 @@ export class ChecklistPage implements OnInit {
       map((s) => {
         const list = s.checklist ?? [];
         if (!list || list.length === 0) return 0;
-        console.log('list :>> ', list);
         const done = list.filter((i) => i.selected).length;
         return done / list.length;
       })
@@ -48,18 +49,23 @@ export class ChecklistPage implements OnInit {
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.allDoneSub = this.allDone$
+      .pipe(startWith(false), pairwise())
+      .subscribe(([prev, curr]) => {
+        if (!prev && curr) {
+          this.showSorted = true;
+          setTimeout(() => (this.showSorted = false), 3000);
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    this.allDoneSub?.unsubscribe();
+  }
 
   toggleChecklistItem(item: ChecklistItem) {
     this.planService.toggleChecklistItem(item.id);
-    this.allDone$.subscribe((all) => {
-      if (all) {
-        this.showSorted = true;
-
-        // 可選：幾秒後自動關閉
-        setTimeout(() => (this.showSorted = false), 2000);
-      }
-    });
   }
 
   mapWeatherIcon(code: number): string {

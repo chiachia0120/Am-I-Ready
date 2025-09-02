@@ -7,12 +7,13 @@ import {
   PlanService,
   WeatherService,
   GeminiService,
+  UserPreferencesService,
 } from '../../../shared/services';
 import { Observable } from 'rxjs';
 import { PlanState, PlanItem } from '../../../shared/models';
 import { take, map } from 'rxjs/operators';
 import { mapWeatherCode } from '../../../shared/utils/weather-mapper';
-
+import { LoadingController } from '@ionic/angular';
 @Component({
   selector: 'app-plan',
   standalone: true,
@@ -26,13 +27,19 @@ export class PlanPage implements OnInit {
   selectedCount$!: Observable<number>;
   activities$!: Observable<PlanItem[]>;
   constructor(
+    private loadingCtrl: LoadingController,
     private planService: PlanService,
     private toast: ToastController,
     private router: Router,
     private weatherService: WeatherService,
-    private geminiService: GeminiService
+    private geminiService: GeminiService,
+    private prefService: UserPreferencesService
   ) {
     this.state$ = this.planService.state$;
+  }
+
+  get preferences() {
+    return this.prefService.getPreferences();
   }
 
   ngOnInit() {
@@ -58,10 +65,8 @@ export class PlanPage implements OnInit {
   }
 
   generateChecklist() {
-    this.activities$.pipe(take(1)).subscribe((activities) => {
+    this.activities$.pipe(take(1)).subscribe(async (activities) => {
       const selectedPlans = activities.filter((a) => a.selected);
-      console.log('Selected Plans:', selectedPlans);
-
       if (selectedPlans.length === 0) {
         this.toast
           .create({
@@ -72,46 +77,71 @@ export class PlanPage implements OnInit {
         return;
       }
 
-      this.weatherService.getWeather().subscribe(async (weather) => {
-        console.log('Weather info:', weather);
-        console.log('Selected plans:', selectedPlans);
+      const loading = await this.loadingCtrl.create({
+        message: 'Generating checklist...',
+        spinner: 'circles',
+      });
+      await loading.present();
 
-        const weatherData = {
-          temperature_now: weather.current_weather.temperature,
-          temperature_max: weather.daily.temperature_2m_max[0],
-          temperature_min: weather.daily.temperature_2m_min[0],
-          description: mapWeatherCode(weather.current_weather.weathercode),
-          weatherCode: weather.current_weather.weathercode,
-          windspeed: weather.current_weather.windspeed,
-          is_day: weather.current_weather.is_day,
-          // icon: this.mapWeatherIcon(weather.current_weather.weathercode)
-        };
+      const prefs = this.preferences;
+      let filteredPrefs: Record<string, string> | null = null;
 
-        this.planService.setWeather(weatherData);
+      if (prefs) {
+        filteredPrefs = Object.entries(prefs).reduce((acc, [key, value]) => {
+          if (value !== 2) {
+            acc[key] = value === 0 ? 'Yes' : 'No';
+          }
+          return acc;
+        }, {} as Record<string, string>);
+      }
 
-        const payload = {
-          plans: selectedPlans.map((p) => p.title),
-          weather: weatherData,
-        };
+      this.weatherService.getWeather().subscribe({
+        next: async (weather) => {
+          const weatherData = {
+            temperature_now: weather.current_weather.temperature,
+            temperature_max: weather.daily.temperature_2m_max[0],
+            temperature_min: weather.daily.temperature_2m_min[0],
+            description: mapWeatherCode(weather.current_weather.weathercode),
+            weatherCode: weather.current_weather.weathercode,
+            windspeed: weather.current_weather.windspeed,
+            is_day: weather.current_weather.is_day,
+          };
 
-        console.log('payload :>> ', payload);
-        // this.geminiService.generateChecklist(payload).then((checklist) => {
-        //   console.log('Checklist:', checklist);
+          this.planService.setWeather(weatherData);
 
-        //   // 存進 PlanService
-        //   this.planService.setChecklist(checklist);
+          const payload = {
+            plans: selectedPlans.map((p) => p.title),
+            weather: weatherData,
+            preferences: filteredPrefs,
+          };
 
-        //   // 顯示提示
-        //   this.toast
-        //     .create({
-        //       message: 'Checklist generated!',
-        //       duration: 1000,
-        //     })
-        //     .then((t) => t.present());
+          try {
+            const checklist = await this.geminiService.generateChecklist(
+              payload
+            );
+            this.planService.setChecklist(checklist);
 
-        //   // 跳轉到 checklist 頁面
-        //   this.router.navigateByUrl('/pages/checklist');
-        // });
+            this.toast
+              .create({ message: 'Checklist generated!', duration: 1000 })
+              .then((t) => t.present());
+            this.router.navigateByUrl('/pages/checklist');
+          } catch (err) {
+            this.toast
+              .create({
+                message: 'Failed to generate checklist',
+                duration: 1500,
+              })
+              .then((t) => t.present());
+          } finally {
+            loading.dismiss();
+          }
+        },
+        error: async () => {
+          loading.dismiss();
+          this.toast
+            .create({ message: 'Failed to fetch weather', duration: 1500 })
+            .then((t) => t.present());
+        },
       });
     });
   }

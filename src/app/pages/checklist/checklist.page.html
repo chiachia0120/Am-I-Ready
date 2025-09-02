@@ -68,15 +68,7 @@
   </ion-list>
 
   <!-- Sorted Popup -->
-  <!-- <ion-modal [isOpen]="showSorted" cssClass="sorted-modal">
-    <ng-template>
-      <div class="sorted-popup">
-        <img src="assets/sorted.svg" alt="sorted" class="sorted-svg" />
-      </div>
-    </ng-template>
-  </ion-modal>
-</ion-content> -->
-  <div class="sorted-popup" *ngIf="allDone$ | async">
+  <div class="sorted-popup" *ngIf="showSorted">
     <div class="sorted-circle">
       <h2>You’re sorted!</h2>
       <p>Let’s go 🎉</p>

@@ -7,17 +7,26 @@ export class GeminiService {
   private genAI: GoogleGenerativeAI;
 
   constructor() {
-    // ⚠️ API Key 建議放在 environment.ts
     this.genAI = new GoogleGenerativeAI(environment.GEMINI_API_KEY);
   }
 
   async generateChecklist(
     payload: any
   ): Promise<{ label: string; icon: string }[]> {
-    const prompt = `
+    let prompt = `
 You are an assistant that generates a checklist of items to prepare before going out.
 The checklist must be practical and based on the user's planned activities and today's weather conditions.
+The checklist should be simple, concrete, and designed to reduce memory burden for neurodivergent users.
+`;
 
+    if (payload.preferences && Object.keys(payload.preferences).length > 0) {
+      prompt += `
+User preferences (Yes = usually true, No = usually false):
+${JSON.stringify(payload.preferences, null, 2)}
+`;
+    }
+
+    prompt += `
 Plans:
 ${payload.plans.map((p: string, i: number) => `${i + 1}. ${p}`).join('\n')}
 
@@ -46,6 +55,7 @@ Example:
     const result = await model.generateContent(prompt);
     const text = result.response.text();
 
+    console.log('prompt', prompt);
     console.log('Raw response:', text);
 
     try {
