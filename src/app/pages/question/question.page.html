@@ -5,22 +5,59 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Progress bar -->
+  <div class="progress-row">
+    <div class="progress-spacer"></div>
+
+    <div class="stepper">
+      <div
+        *ngFor="let q of questions; let i = index"
+        class="step"
+        [class.active]="i === currentIndex"
+      ></div>
+    </div>
+    <div class="progress-text">
+      {{ currentIndex + 1 }} / {{ questions.length }}
+    </div>
+  </div>
+
   <ng-container *ngIf="preferences">
-    <ng-container *ngFor="let question of questions; let i = index">
-      <div class="question-block">
-        <div class="question-label">{{ question.label }}</div>
-        <ion-segment [(ngModel)]="preferences[question.key]">
-          <ion-segment-button
-            *ngFor="let option of options"
-            [value]="option.value"
-          >
-            {{ option.label }}
-          </ion-segment-button>
-        </ion-segment>
-      </div>
-    </ng-container>
+    <div class="question-block">
+      <div class="question-label">{{ questions[currentIndex].label }}</div>
+      <ion-segment [(ngModel)]="preferences[questions[currentIndex].key]">
+        <ion-segment-button
+          *ngFor="let option of options"
+          [value]="option.value"
+        >
+          {{ option.label }}
+        </ion-segment-button>
+      </ion-segment>
+    </div>
   </ng-container>
-  <ion-button expand="block" (click)="save()" class="generate-btn">
-    Save Preferences
-  </ion-button>
+
+  <!-- nav bar -->
+  <div class="nav-container">
+    <ion-button
+      (click)="prev()"
+      [disabled]="currentIndex === 0"
+      class="nav-buttons"
+    >
+      Previous
+    </ion-button>
+    <ion-button
+      (click)="next()"
+      [disabled]="currentIndex === questions.length - 1"
+      class="nav-buttons"
+    >
+      Next
+    </ion-button>
+  </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" (click)="save()" class="generate-btn">
+      Save Preferences
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

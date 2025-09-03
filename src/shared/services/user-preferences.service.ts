@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { UserPreferences } from '../models';
 
 const KEY = 'user_preferences';

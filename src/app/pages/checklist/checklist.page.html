@@ -4,39 +4,74 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll()">
   <!-- Weather Card -->
-  <ion-card *ngIf="weather$ | async as weather">
-    <ion-card-content>
-      <div class="weather-card">
-        <!-- 左邊：地點 + 溫度 -->
-        <div class="weather-left">
-          <div class="city">{{ cityName }}</div>
-          <div class="description">{{ weather.description }}</div>
-          <div class="temp">{{ weather.temperature_now }}°</div>
+  <ng-container *ngIf="weather$ | async as weather">
+    <ion-card>
+      <ion-card-content>
+        <div class="weather-card">
+          <!-- left：location + weather info -->
+          <div class="weather-left">
+            <div class="city">{{ cityName }}</div>
+            <div class="description">{{ weather.description }}</div>
+            <div class="temp">{{ weather.temperature_now }}°</div>
+          </div>
+
+          <!-- right：icon -->
+          <img
+            class="weather-icon"
+            [src]="mapWeatherIcon(weather.weatherCode)"
+            alt="weather icon"
+          />
         </div>
 
-        <!-- 右邊：icon -->
+        <!-- weather footer -->
+        <div class="weather-footer">
+          <div>
+            <div class="label">Highest</div>
+            <div class="value">{{ weather.temperature_max }}°</div>
+          </div>
+          <div>
+            <div class="label">Lowest</div>
+            <div class="value">{{ weather.temperature_min }}°</div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Sticky Mini Weather -->
+    <div class="sticky-header" [class.hide]="!showMiniWeather">
+      <div class="mini-weather">
         <img
           class="weather-icon"
           [src]="mapWeatherIcon(weather.weatherCode)"
           alt="weather icon"
         />
+
+        <div class="text">
+          {{ weather.temperature_now }}° {{ weather.description }}
+        </div>
+
+        <div class="spacer"></div>
+        <!-- 空白佔位 -->
+
+        <img
+          class="weather-icon"
+          [src]="mapWeatherIcon(weather.weatherCode)"
+          alt="weather icon"
+        />
+
+        <div class="progress-container">
+          <ion-progress-bar [value]="progress$ | async"></ion-progress-bar>
+          <p class="progress-label">
+            {{ (((progress$ | async) ?? 0) * 100) | number:'1.0-0' }}%
+          </p>
+        </div>
       </div>
 
-      <!-- 下方區塊 -->
-      <div class="weather-footer">
-        <div>
-          <div class="label">Highest</div>
-          <div class="value">{{ weather.temperature_max }}°</div>
-        </div>
-        <div>
-          <div class="label">Lowest</div>
-          <div class="value">{{ weather.temperature_min }}°</div>
-        </div>
-      </div>
-    </ion-card-content>
-  </ion-card>
+      <!-- <ng-container *ngTemplateOutlet="progressBar"></ng-container> -->
+    </div>
+  </ng-container>
 
   <!-- Checklist Title -->
   <ion-text class="checklist-title">
@@ -50,6 +85,7 @@
       {{ (((progress$ | async) ?? 0) * 100) | number:'1.0-0' }}%
     </p>
   </div>
+  <!-- <ng-container *ngTemplateOutlet="progressBar"></ng-container> -->
 
   <!-- Checklist Items -->
   <ion-list>
@@ -73,5 +109,14 @@
       <h2>You’re sorted!</h2>
       <p>Let’s go 🎉</p>
     </div>
-  </div></ion-content
->
+  </div>
+</ion-content>
+
+<ng-template #progressBar>
+  <div class="progress-container">
+    <ion-progress-bar [value]="progress$ | async"></ion-progress-bar>
+    <p class="progress-label">
+      {{ (((progress$ | async) ?? 0) * 100) | number:'1.0-0' }}%
+    </p>
+  </div>
+</ng-template>

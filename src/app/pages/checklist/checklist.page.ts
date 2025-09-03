@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -14,6 +14,9 @@ import { ChecklistItem } from '../../../shared/models/plan.models';
 })
 export class ChecklistPage implements OnInit {
   showSorted = false;
+  showMiniWeather = false;
+  @ViewChild('weatherCard', { static: false }) weatherCard!: ElementRef;
+
   private allDoneSub?: Subscription;
 
   constructor(
@@ -70,5 +73,13 @@ export class ChecklistPage implements OnInit {
 
   mapWeatherIcon(code: number): string {
     return `assets/icon/${code}.svg`;
+  }
+
+  onScroll() {
+    const card = document.querySelector('.weather-footer') as HTMLElement;
+    if (card) {
+      const rect = card.getBoundingClientRect();
+      this.showMiniWeather = rect.bottom <= 0;
+    }
   }
 }

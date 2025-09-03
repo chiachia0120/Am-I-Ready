@@ -1,3 +1,11 @@
+ion-header {
+  ion-toolbar {
+    --background: #efe3c7;
+    --color: #000;
+    --border-color: #efe3c7;
+  }
+}
+
 ion-list {
   margin: 12px;
   border-radius: 10px;

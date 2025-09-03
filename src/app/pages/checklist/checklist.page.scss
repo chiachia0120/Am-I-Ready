@@ -1,3 +1,11 @@
+ion-header {
+  ion-toolbar {
+    --background: #efe3c7;
+    --color: #000;
+    --border-color: #efe3c7;
+  }
+}
+
 ion-card {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -95,7 +103,6 @@ ion-card {
   }
 }
 
-
 ion-list {
   margin: 12px;
   border-radius: 10px;
@@ -118,7 +125,6 @@ ion-item::part(native) {
   border-radius: 8px; // 圓角
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); // 陰影
 }
-
 
 ion-item ion-icon {
   font-size: 20px;
@@ -169,20 +175,21 @@ ion-checkbox {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
 
   animation: popIn 0.5s ease-out forwards;
+
+  h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  p {
+    margin: 0.5rem 0 0;
+    font-size: 18px;
+    color: #555;
+  }
 }
 
-.sorted-circle h2 {
-  margin: 0;
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-}
-
-.sorted-circle p {
-  margin: 0.5rem 0 0;
-  font-size: 18px;
-  color: #555;
-}
 
 @keyframes popIn {
   0% {
@@ -197,5 +204,87 @@ ion-checkbox {
 
   100% {
     transform: scale(1);
+  }
+}
+
+.sticky-header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+  padding: 4px 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: row;
+  transition: opacity 0.3s ease;
+  background-color: #efe3c7;
+  height: 70px;
+
+  &.hide {
+    display: none;
+  }
+
+  .mini-weather {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* 三欄 */
+    grid-template-rows: 1fr 1fr;
+    /* 兩行固定比例 */
+    /* 兩行 */
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    width: 100%;
+
+    .weather-icon {
+      grid-row: 1 / span 2;
+      /* 占兩行 */
+      grid-column: 1;
+      /* 第一欄 */
+      width: 100px;
+      align-self: center;
+      border: transparent;
+    }
+
+    .text {
+      grid-row: 1;
+      grid-column: 2;
+      /* 第一行中間 */
+      font-weight: 400;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .spacer {
+      grid-row: 1;
+      grid-column: 3;
+      /* 第一行右邊空白 */
+    }
+
+    .progress-container {
+      grid-row: 2;
+      grid-column: 2 / span 2;
+      /* 第二行 2 + 3 欄占滿 */
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+
+      .progress-label {
+        font-size: 14px;
+        color: var(--ion-color-medium);
+      }
+
+      ion-progress-bar {
+        --background: #fff;
+        --progress-background: #cccccc;
+        height: 12px;
+        border-radius: 10px;
+        flex: 1;
+      }
+    }
   }
 }
