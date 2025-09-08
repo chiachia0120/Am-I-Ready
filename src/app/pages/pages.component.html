@@ -1,4 +1,10 @@
-<ion-tabs>
+<ion-content *ngIf="showSplash" fullscreen>
+  <div class="logo-container">
+    <img src="assets/logo.svg" alt="App Logo" />
+  </div>
+</ion-content>
+
+<ion-tabs *ngIf="!showSplash">
   <ion-tab-bar slot="bottom">
     <ion-tab-button
       tab="plan"

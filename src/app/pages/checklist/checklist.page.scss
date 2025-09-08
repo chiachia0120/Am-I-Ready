@@ -11,7 +11,7 @@ ion-card {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin: 12px;
   background: #fff;
-  overflow: hidden; // 讓圓角生效
+  overflow: hidden;
 
   &-content {
     padding-inline-start: 0;
@@ -52,7 +52,7 @@ ion-card {
   }
 
   .weather-icon {
-    height: 100px;
+    max-height: 100px;
   }
 }
 
@@ -76,14 +76,7 @@ ion-card {
   }
 }
 
-.checklist-title {
-  text-align: center;
-  margin-top: 12px;
-  font-weight: bold;
-  font-size: 22px;
-}
-
-.progress-container {
+.progress-bar-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -96,9 +89,9 @@ ion-card {
   }
 
   ion-progress-bar {
-    --background: #ffff; // 進度顏色
-    --progress-background: #cccccc; // 進度顏色
-    height: 12px; // 自訂高度
+    --background: #ffff;
+    --progress-background: #cccccc;
+    height: 12px;
     border-radius: 10px;
   }
 }
@@ -106,7 +99,7 @@ ion-card {
 ion-list {
   margin: 12px;
   border-radius: 10px;
-  background: transparent; // 不要整個白底
+  background: transparent;
 }
 
 ion-item {
@@ -114,16 +107,16 @@ ion-item {
   border-radius: 8px;
   background: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-  --padding-start: 16px; // 左內距（icon 與邊緣距離）
-  --inner-padding-end: 12px; // 右內距（checkbox 與邊緣距離）
-  --min-height: 60px; // 高度一致
+  --padding-start: 16px;
+  --inner-padding-end: 12px;
+  --min-height: 60px;
   --border-style: none;
 }
 
 ion-item::part(native) {
-  background: #fff; // 白底
-  border-radius: 8px; // 圓角
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); // 陰影
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 ion-item ion-icon {
@@ -140,11 +133,11 @@ ion-item ion-label {
 
 ion-checkbox {
   --size: 22px;
-  --checkbox-background-checked: #f9c74f; // 勾選顏色（黃）
+  --checkbox-background-checked: #f9c74f;
   --checkbox-background: #fff;
   --border-color: #aaa;
   --border-color-checked: #f9c74f;
-  --checkmark-color: #000; // ✔ 顏色
+  --checkmark-color: #000;
   margin-left: auto;
 }
 
@@ -157,9 +150,9 @@ ion-checkbox {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2000; // 蓋在最上層
-  background: rgba(255, 255, 255, 0.4); // 半透明背景，像 SweetAlert
-  backdrop-filter: blur(2px); // 模糊背景
+  z-index: 2000;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(2px);
 }
 
 .sorted-circle {
@@ -190,7 +183,6 @@ ion-checkbox {
   }
 }
 
-
 @keyframes popIn {
   0% {
     transform: scale(0.5);
@@ -213,13 +205,15 @@ ion-checkbox {
   top: 0;
   z-index: 10;
   background: #fff;
-  padding: 4px 8px;
+  padding: 8px 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: row;
   transition: opacity 0.3s ease;
   background-color: #efe3c7;
-  height: 70px;
+  background-color: #efe3c7;
+  height: 80px;
+  padding-top: 10px;
 
   &.hide {
     display: none;
@@ -227,24 +221,17 @@ ion-checkbox {
 
   .mini-weather {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    /* 三欄 */
+    grid-template-columns: auto 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    /* 兩行固定比例 */
-    /* 兩行 */
     align-items: center;
-    gap: 4px;
     font-size: 14px;
     font-weight: 500;
-    margin-bottom: 4px;
     width: 100%;
 
     .weather-icon {
       grid-row: 1 / span 2;
-      /* 占兩行 */
       grid-column: 1;
-      /* 第一欄 */
-      width: 100px;
+      max-width: 70px;
       align-self: center;
       border: transparent;
     }
@@ -252,22 +239,20 @@ ion-checkbox {
     .text {
       grid-row: 1;
       grid-column: 2;
-      /* 第一行中間 */
       font-weight: 400;
       font-size: 16px;
       text-align: center;
+      white-space: nowrap;
     }
 
     .spacer {
       grid-row: 1;
       grid-column: 3;
-      /* 第一行右邊空白 */
     }
 
     .progress-container {
       grid-row: 2;
       grid-column: 2 / span 2;
-      /* 第二行 2 + 3 欄占滿 */
       display: flex;
       align-items: center;
       gap: 8px;

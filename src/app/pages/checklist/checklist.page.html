@@ -1,9 +1,3 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Checklist</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [scrollEvents]="true" (ionScroll)="onScroll()">
   <!-- Weather Card -->
   <ng-container *ngIf="weather$ | async as weather">
@@ -68,38 +62,68 @@
           </p>
         </div>
       </div>
-
-      <!-- <ng-container *ngTemplateOutlet="progressBar"></ng-container> -->
     </div>
   </ng-container>
 
-  <!-- Checklist Title -->
-  <ion-text class="checklist-title">
-    <div>Checklist</div>
-  </ion-text>
-
   <!-- Progress bar -->
-  <div class="progress-container">
+  <div class="progress-bar-container">
     <ion-progress-bar [value]="progress$ | async"></ion-progress-bar>
     <p class="progress-label">
       {{ (((progress$ | async) ?? 0) * 100) | number:'1.0-0' }}%
     </p>
   </div>
-  <!-- <ng-container *ngTemplateOutlet="progressBar"></ng-container> -->
 
   <!-- Checklist Items -->
   <ion-list>
-    <ion-item *ngFor="let item of (checklist$ | async)">
-      <ion-icon
-        [name]="item.icon || 'briefcase-outline'"
-        slot="start"
-      ></ion-icon>
-      <ion-label>{{ item.label }}</ion-label>
-      <ion-checkbox
+    <ion-item-sliding #slidingItem *ngFor="let item of checklist">
+      <ion-item>
+        <ion-icon
+          [name]="item.icon || 'briefcase-outline'"
+          slot="start"
+        ></ion-icon>
+        <!-- edit mode -->
+        <ion-input
+          *ngIf="item.editing"
+          [value]="item.label"
+          (keyup.enter)="editItem(item, $event);"
+          (ionBlur)="editItem(item, $event);"
+        ></ion-input>
+
+        <!-- display mode -->
+        <ion-label *ngIf="!item.editing">{{ item.label }}</ion-label>
+        <ion-checkbox
+          slot="end"
+          [checked]="item.selected"
+          (ionChange)="toggleChecklistItem(item)"
+        ></ion-checkbox>
+      </ion-item>
+
+      <!-- slide left -->
+      <ion-item-options side="end">
+        <ion-item-option color="primary" (click)="startEdit(item, slidingItem)">
+          <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="deleteItem(item, slidingItem)">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
+    <ion-item>
+      <ion-input
+        #newActivity
+        type="text"
+        fill="outline"
+        placeholder="Add an item"
+      >
+      </ion-input>
+      <ion-button
+        fill="clear"
         slot="end"
-        [checked]="item.selected"
-        (ionChange)="toggleChecklistItem(item)"
-      ></ion-checkbox>
+        (click)="addItem(newActivity.value); newActivity.value=''"
+      >
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
     </ion-item>
   </ion-list>
 
@@ -111,12 +135,3 @@
     </div>
   </div>
 </ion-content>
-
-<ng-template #progressBar>
-  <div class="progress-container">
-    <ion-progress-bar [value]="progress$ | async"></ion-progress-bar>
-    <p class="progress-label">
-      {{ (((progress$ | async) ?? 0) * 100) | number:'1.0-0' }}%
-    </p>
-  </div>
-</ng-template>

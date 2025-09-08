@@ -1,44 +1,78 @@
 ion-content {
-  --background: #faf8f5; // 柔和米白背景
-}
+  --background: #faf8f5;
 
-.question-block {
-  margin-bottom: 24px;
-}
+  .progress-row {
+    display: flex;
+    align-items: center;
+    margin: 16px 0;
 
-.question-label {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #333;
-}
+    .progress-spacer {
+      flex: 1;
+    }
 
-ion-segment {
-  display: flex;
-  justify-content: space-between;
-  --background: transparent;
-}
+    .stepper {
+      display: flex;
+      flex: 1;
+      justify-content: center;
 
-ion-segment-button {
-  flex: 1;
-  margin: 0 4px;
-  border-radius: 12px;
-  --background: #ffffff;
-  --color: #333;
-  font-weight: 500;
-  border: 1px solid #ccc;
+      .step {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #ccc;
+        margin: 0 4px;
+        transition: background-color 0.3s ease;
 
-  &.segment-button-checked {
-    --background: #4c8dff;
-    --color: #fff;
-    font-weight: 600;
+        &.active {
+          background-color: #A2BDE0;
+        }
+      }
+    }
+
+    .progress-text {
+      font-size: 14px;
+      color: #555;
+      min-width: 50px;
+      text-align: right;
+      flex: 1;
+      padding-right: 5px;
+    }
   }
-}
 
-ion-button {
-  margin-top: 16px;
-  border-radius: 16px;
-  font-weight: 600;
+  .question-block {
+    margin: 24px 0;
+
+    .question-label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #333;
+      min-height: 65px;
+    }
+
+    ion-segment {
+      display: flex;
+      justify-content: space-between;
+      --background: transparent;
+
+      ion-segment-button {
+        flex: 1;
+        margin: 0 4px;
+        border-radius: 12px;
+        --background: #ffffff;
+        --color: #333;
+        --indicator-box-shadow: none;
+        font-weight: 500;
+        border: 1px solid #ccc;
+
+        &.segment-button-checked {
+          --background-checked: #efe3c7;
+          --color: #000;
+          font-weight: 600;
+        }
+      }
+    }
+  }
 }
 
 .nav-container {
@@ -59,7 +93,6 @@ ion-button {
     --border-width: 1px;
     display: flex;
     justify-content: space-between;
-    margin: 16px 0;
   }
 }
 
@@ -79,52 +112,4 @@ ion-button {
   &:active {
     --background: #d3d4d5;
   }
-}
-
-.progress-row {
-  display: flex;
-  align-items: center;
-  /* 左右分散 */
-  margin: 16px 0;
-}
-
-.progress-spacer {
-  flex: 1;
-  /* 左邊空白，保持對稱 */
-}
-
-.stepper {
-  display: flex;
-  flex: 1;
-  /* 佔滿中間空間 */
-  justify-content: center;
-  /* 圓點置中 */
-}
-
-.step {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #ccc;
-  margin: 0 4px;
-  transition: background-color 0.3s ease;
-
-  &.active {
-    background-color: #3880ff;
-    /* Ionic primary color */
-  }
-}
-
-.progress-text {
-  font-size: 14px;
-  color: #555;
-  min-width: 50px;
-  /* 保持對齊 */
-  text-align: right;
-  flex: 1;
-  padding-right: 5px;
-}
-
-.question-block {
-  margin: 24px 0;
 }

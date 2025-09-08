@@ -9,8 +9,9 @@ export interface ChecklistItem {
   id: string;
   label: string;
   selected: boolean;
-  required?: boolean;
-  icon: string;
+  icon?: string;
+  custom?: boolean; // true = 使用者新增
+  editing?: boolean; // true = 編輯中
 }
 
 export interface PlanState {

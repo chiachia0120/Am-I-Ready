@@ -53,7 +53,7 @@ export class QuestionPage implements OnInit {
   options = [
     { value: 0, label: 'Yes' },
     { value: 1, label: 'No' },
-    { value: 2, label: 'Prefer not to say' },
+    { value: 2, label: 'Skip' },
   ];
 
   ngOnInit() {

@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { pairwise, map, Observable, startWith, Subscription } from 'rxjs';
 import { PlanService, WeatherService } from '../../../shared/services';
 import { ChecklistItem } from '../../../shared/models/plan.models';
+import { IonItemSliding } from '@ionic/angular';
 
 @Component({
   standalone: true,
@@ -24,9 +25,7 @@ export class ChecklistPage implements OnInit {
     private weatherService: WeatherService
   ) {}
 
-  get checklist$(): Observable<ChecklistItem[]> {
-    return this.planService.state$.pipe(map((s) => s.checklist));
-  }
+  checklist: ChecklistItem[] = [];
 
   get weather$(): Observable<any> {
     return this.planService.state$.pipe(map((s) => s.weather));
@@ -61,6 +60,10 @@ export class ChecklistPage implements OnInit {
           setTimeout(() => (this.showSorted = false), 3000);
         }
       });
+
+    this.planService.state$.subscribe((s) => {
+      this.checklist = s.checklist;
+    });
   }
 
   ngOnDestroy() {
@@ -81,5 +84,32 @@ export class ChecklistPage implements OnInit {
       const rect = card.getBoundingClientRect();
       this.showMiniWeather = rect.bottom <= 0;
     }
+  }
+
+  addItem(label: any) {
+    const title = (label ?? '').toString().trim();
+    if (!title) return;
+    this.planService.addChecklistItem(title);
+  }
+
+  startEdit(item: ChecklistItem, slidingItem: IonItemSliding) {
+    const checklist = this.planService['_state$'].value.checklist.map((i) =>
+      i.id === item.id ? { ...i, editing: true } : i
+    );
+    this.planService['patch']({ checklist });
+    slidingItem.close();
+  }
+
+  editItem(item: ChecklistItem, event: any) {
+    const newValue = (event.target as HTMLInputElement).value ?? '';
+    if (newValue.trim()) {
+      item.label = newValue.trim();
+    }
+    item.editing = false;
+  }
+
+  deleteItem(item: ChecklistItem, slidingItem: IonItemSliding) {
+    this.checklist = this.checklist.filter((i) => i.id !== item.id);
+    slidingItem.close();
   }
 }

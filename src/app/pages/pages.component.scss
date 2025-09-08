@@ -1,45 +1,15 @@
-ion-header {
-  ion-toolbar {
-    --background: #efe3c7;
-    --color: #000;
-    --border-color: #efe3c7;
+ion-content {
+  --background: #faf8f5;
+}
+
+.logo-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 200px;
+    height: auto;
   }
-}
-
-ion-list {
-  margin: 12px;
-  border-radius: 10px;
-  background: transparent; // 不要整個白底
-}
-
-ion-item {
-  margin-bottom: 10px;
-  border-radius: 8px;
-  background: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-  --padding-start: 16px; // 左內距（icon 與邊緣距離）
-  --inner-padding-end: 12px; // 右內距（checkbox 與邊緣距離）
-  --min-height: 60px; // 高度一致
-}
-
-ion-item ion-icon {
-  font-size: 20px;
-  color: #333;
-  margin-right: 12px;
-}
-
-ion-item ion-label {
-  font-weight: 500;
-  font-size: 16px;
-  color: #222;
-}
-
-ion-checkbox {
-  --size: 22px;
-  --checkbox-background-checked: #f9c74f; // 勾選顏色（黃）
-  --checkbox-background: #fff;
-  --border-color: #aaa;
-  --border-color-checked: #f9c74f;
-  --checkmark-color: #000; // ✔ 顏色
-  margin-left: auto;
 }

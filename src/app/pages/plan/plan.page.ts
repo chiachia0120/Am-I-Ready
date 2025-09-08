@@ -60,8 +60,23 @@ export class PlanPage implements OnInit {
     this.planService.toggleActivity(item.id);
   }
 
-  removeActivity(item: PlanItem) {
+  async removeActivity(item: PlanItem) {
+    const removedId = item.id;
     this.planService.removeActivity(item.id);
+    const toast = await this.toast.create({
+      message: `${item.title} removed`,
+      buttons: [
+        {
+          text: 'Undo',
+          handler: () => {
+            this.planService.restoreActivity(removedId);
+          },
+        },
+      ],
+      duration: 3000,
+    });
+
+    await toast.present();
   }
 
   generateChecklist() {

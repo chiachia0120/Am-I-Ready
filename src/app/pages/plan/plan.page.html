@@ -9,8 +9,10 @@
     <ion-card-header>
       <ion-card-title class="plan-title">
         <ion-icon name="calendar-outline"></ion-icon>
-        {{ selectedCount$ | async }} Plan{{ ((selectedCount$ | async) ?? 0) > 1
-        ? 's' : '' }} for today
+        <div class="text">
+          {{ selectedCount$ | async }} Plan{{ ((selectedCount$ | async) ?? 0) >
+          1 ? 's' : '' }} for today
+        </div>
       </ion-card-title>
     </ion-card-header>
 
@@ -35,12 +37,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-input
-          #newActivity
-          type="text"
-          fill="outline"
-          placeholder="Add a plan"
-        >
+        <ion-input #newActivity type="text" placeholder="Add a plan">
         </ion-input>
         <ion-button
           fill="clear"
@@ -61,7 +58,7 @@
       (click)="generateChecklist()"
       class="generate-btn"
     >
-      Generate checklist
+      Generate Checklist
     </ion-button>
   </ion-toolbar>
 </ion-footer>

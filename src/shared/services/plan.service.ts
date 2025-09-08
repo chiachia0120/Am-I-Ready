@@ -20,6 +20,7 @@ export class PlanService {
   });
 
   readonly state$ = this._state$.asObservable();
+  private lastRemoved: PlanItem | null = null;
 
   constructor(private store: StorageService) {
     this.restore();
@@ -74,9 +75,29 @@ export class PlanService {
   }
 
   removeActivity(id: string) {
-    this.patch({
-      activities: this._state$.value.activities.filter((a) => a.id !== id),
+    const current = this._state$.value;
+    const itemToRemove = current.activities.find((a) => a.id === id) || null;
+
+    if (itemToRemove) {
+      this.lastRemoved = itemToRemove;
+    }
+
+    this._state$.next({
+      ...current,
+      activities: current.activities.filter((a) => a.id !== id),
     });
+  }
+
+  restoreActivity(id: string) {
+    if (!this.lastRemoved) return;
+
+    const current = this._state$.value;
+    this._state$.next({
+      ...current,
+      activities: [...current.activities, this.lastRemoved],
+    });
+
+    this.lastRemoved = null;
   }
 
   setChecklist(items: { label: string; icon: string }[]) {
@@ -96,6 +117,21 @@ export class PlanService {
       c.id === id ? { ...c, selected: !c.selected } : c
     );
     this.patch({ checklist });
+  }
+
+  addChecklistItem(label: string) {
+    const current = this._state$.value;
+    const newItem: ChecklistItem = {
+      id: crypto.randomUUID(),
+      label: label.trim(),
+      selected: false,
+      icon: 'create-outline',
+      custom: true,
+    };
+    this._state$.next({
+      ...current,
+      checklist: [...current.checklist, newItem],
+    });
   }
 
   clearChecklist() {
