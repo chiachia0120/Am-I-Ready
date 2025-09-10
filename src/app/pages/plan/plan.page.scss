@@ -67,6 +67,11 @@ ion-list {
     --inner-padding-end: 12px;
     --min-height: 60px;
 
+    @media (prefers-color-scheme: dark) {
+      --background: #1e1e1e;
+      --color: #fff;
+    }
+
     &:last-child {
       margin-bottom: 0;
     }
@@ -84,7 +89,7 @@ ion-list {
     ion-label {
       font-size: 16px;
       font-weight: 500;
-      color: #222;
+      color: var(--color);
     }
   }
 }
@@ -106,4 +111,27 @@ ion-list {
   &:active {
     --background: #d3d4d5;
   }
+
+  @media (prefers-color-scheme: dark) {
+    --color: #ffffff;
+    --border-color: #ffffff;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+
+  ion-card {
+    --background: #1e1e1e;
+    --color: #ffffff;
+  }
+
+  .plan-title {
+    color: #ffffff;
+  }
+
+  ion-input,
+  ion-label {
+    color: #ffffff;
+  }
+
 }

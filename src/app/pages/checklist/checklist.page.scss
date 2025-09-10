@@ -111,6 +111,12 @@ ion-item {
   --inner-padding-end: 12px;
   --min-height: 60px;
   --border-style: none;
+
+  ion-input {
+    @media (prefers-color-scheme: dark) {
+      --color: #333;
+    }
+  }
 }
 
 ion-item::part(native) {
