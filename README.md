@@ -3,6 +3,11 @@
 This application is built with **Ionic and Angular**. 
 This project is designed to support neurodivergent users by helping them quickly generate a personalised checklist of items to pack before going out.
 
+## Demo
+
+A live demo of the application is available here:  
+[https://chiachia0120.github.io/Am-I-Ready/](https://chiachia0120.github.io/Am-I-Ready/)
+
 ### Pages
 
 - **`plan.page.html` / `plan.page.ts`**  
