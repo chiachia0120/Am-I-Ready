@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  GEMINI_API_KEY: 'AIzaSyA2KtP-JaCp7zLV_Jz4nJRwl5u12ZQ0e2g',
+  GEMINI_API_KEY: 'AIzaSyDTdfRaqYD4oYNPEA_mlQaSUf9SbCE0JEk',
 };
 
 /*
